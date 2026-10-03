@@ -1,0 +1,98 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 0. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    function isValidPlan(data) {
+      return data.name is string && data.name.size() >= 1 && data.name.size() <= 100
+        && data.price is number && data.price >= 0 && data.price <= 5000000
+        && (!('description' in data) || data.description == null || (data.description is string && data.description.size() <= 500))
+        && (!('durationDays' in data) || data.durationDays == null || (data.durationDays is number && data.durationDays >= 1 && data.durationDays <= 3650))
+        && (!('createdAt' in data) || data.createdAt == null || data.createdAt is string)
+        && (!('updatedAt' in data) || data.updatedAt == null || data.updatedAt is string);
+    }
+
+    function isValidSocio(data) {
+      return data.nombre is string && data.nombre.size() >= 1 && data.nombre.size() <= 120
+        && data.plan is string && data.plan.size() >= 1 && data.plan.size() <= 100
+        && data.precio is number && data.precio >= 0 && data.precio <= 5000000
+        && data.fecha_inicio is string && data.fecha_inicio.size() <= 30
+        && data.fecha_fin is string && data.fecha_fin.size() <= 30
+        && data.estado is string && (data.estado == 'activo' || data.estado == 'por_vencer' || data.estado == 'vencido')
+        && (!('email' in data) || data.email == null || (data.email is string && data.email.size() <= 150))
+        && (!('telefono' in data) || data.telefono == null || (data.telefono is string && data.telefono.size() <= 50))
+        && (!('notas' in data) || data.notas == null || (data.notas is string && data.notas.size() <= 1000))
+        && (!('createdAt' in data) || data.createdAt == null || data.createdAt is string)
+        && (!('updatedAt' in data) || data.updatedAt == null || data.updatedAt is string);
+    }
+
+    function isValidTransaction(data) {
+      return (data.tipo == 'ingreso' || data.tipo == 'gasto')
+        && data.concepto is string && data.concepto.size() >= 1 && data.concepto.size() <= 200
+        && data.categoria is string && data.categoria.size() >= 1 && data.categoria.size() <= 100
+        && data.monto is number && data.monto >= 0 && data.monto <= 100000000
+        && data.fecha is string && data.fecha.size() <= 30
+        && data.metodo is string && data.metodo.size() <= 50
+        && (!('socioId' in data) || data.socioId == null || data.socioId is string)
+        && (!('socioNombre' in data) || data.socioNombre == null || data.socioNombre is string)
+        && (!('notas' in data) || data.notas == null || data.notas is string)
+        && (!('createdAt' in data) || data.createdAt == null || data.createdAt is string)
+        && (!('updatedAt' in data) || data.updatedAt == null || data.updatedAt is string);
+    }
+
+    function isValidAttendance(data) {
+      return data.socioNombre is string && data.socioNombre.size() >= 1 && data.socioNombre.size() <= 150
+        && data.fecha is string && data.fecha.size() <= 30
+        && data.hora is string && data.hora.size() <= 10
+        && (!('socioId' in data) || data.socioId == null || data.socioId is string)
+        && (!('socioPlan' in data) || data.socioPlan == null || data.socioPlan is string)
+        && (!('socioEstado' in data) || data.socioEstado == null || data.socioEstado is string)
+        && (!('actividad' in data) || data.actividad == null || data.actividad is string)
+        && (!('notas' in data) || data.notas == null || data.notas is string)
+        && (!('createdAt' in data) || data.createdAt == null || data.createdAt is string)
+        && (!('updatedAt' in data) || data.updatedAt == null || data.updatedAt is string);
+    }
+
+    match /test/{testId} {
+      allow read, write: if true;
+    }
+
+    match /plans/{planId} {
+      allow read: if true;
+      allow create: if isValidPlan(incoming());
+      allow update: if isValidPlan(incoming());
+      allow delete: if true;
+    }
+
+    match /socios/{socioId} {
+      allow read: if true;
+      allow create: if isValidSocio(incoming());
+      allow update: if isValidSocio(incoming());
+      allow delete: if true;
+    }
+
+    match /transactions/{transactionId} {
+      allow read: if true;
+      allow create: if isValidTransaction(incoming());
+      allow update: if isValidTransaction(incoming());
+      allow delete: if true;
+    }
+
+    match /attendances/{attendanceId} {
+      allow read: if true;
+      allow create: if isValidAttendance(incoming());
+      allow update: if isValidAttendance(incoming());
+      allow delete: if true;
+    }
+  }
+}

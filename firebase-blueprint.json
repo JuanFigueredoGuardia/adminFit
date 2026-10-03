@@ -1,0 +1,92 @@
+{
+  "entities": {
+    "Plan": {
+      "title": "Plan de Membresia",
+      "description": "Plan o tarifa de membresia definido por el administrador con su nombre y precio fijado.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Nombre del plan de membresia" },
+        "price": { "type": "number", "description": "Precio o cuota del plan fijado por el admin" },
+        "description": { "type": "string", "description": "Descripcion o beneficios del plan" },
+        "durationDays": { "type": "number", "description": "Duracion en dias del plan (ej. 30)" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "price"]
+    },
+    "Socio": {
+      "title": "Socio del Gimnasio",
+      "description": "Ficha del socio con membresia, cuota fijada por el admin y fechas de vigencia.",
+      "type": "object",
+      "properties": {
+        "nombre": { "type": "string", "description": "Nombre y apellido del socio" },
+        "email": { "type": "string", "description": "Correo electronico de contacto" },
+        "telefono": { "type": "string", "description": "Telefono de contacto o WhatsApp" },
+        "plan": { "type": "string", "description": "Plan asignado o personalizado por el admin" },
+        "precio": { "type": "number", "description": "Precio o cuota mensual fijada por el admin" },
+        "fecha_inicio": { "type": "string", "description": "Fecha de inicio YYYY-MM-DD" },
+        "fecha_fin": { "type": "string", "description": "Fecha de vencimiento YYYY-MM-DD" },
+        "estado": { "type": "string", "description": "Estado de la membresia: activo, por_vencer, vencido" },
+        "notas": { "type": "string", "description": "Notas adicionales u observaciones del socio" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["nombre", "plan", "precio", "fecha_inicio", "fecha_fin", "estado"]
+    },
+    "Transaction": {
+      "title": "Transaccion Financiera",
+      "description": "Registro contable de ingreso o gasto editable y eliminable por el administrador.",
+      "type": "object",
+      "properties": {
+        "tipo": { "type": "string", "description": "Tipo de movimiento: ingreso o gasto" },
+        "concepto": { "type": "string", "description": "Concepto o descripcion del movimiento" },
+        "categoria": { "type": "string", "description": "Categoria contable del movimiento" },
+        "monto": { "type": "number", "description": "Monto en pesos del movimiento" },
+        "fecha": { "type": "string", "description": "Fecha del movimiento YYYY-MM-DD" },
+        "metodo": { "type": "string", "description": "Metodo de pago o cobro" },
+        "socioId": { "type": "string", "description": "ID del socio asociado si aplica" },
+        "socioNombre": { "type": "string", "description": "Nombre del socio asociado si aplica" },
+        "notas": { "type": "string", "description": "Notas u observaciones del movimiento" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["tipo", "concepto", "categoria", "monto", "fecha", "metodo"]
+    },
+    "Attendance": {
+      "title": "Registro de Asistencia",
+      "description": "Registro de ingreso de un socio a las instalaciones del gimnasio.",
+      "type": "object",
+      "properties": {
+        "socioId": { "type": "string", "description": "ID del socio que asistio" },
+        "socioNombre": { "type": "string", "description": "Nombre del socio que asistio" },
+        "socioPlan": { "type": "string", "description": "Plan del socio" },
+        "socioEstado": { "type": "string", "description": "Estado del socio al momento de ingresar" },
+        "fecha": { "type": "string", "description": "Fecha del check-in YYYY-MM-DD" },
+        "hora": { "type": "string", "description": "Hora del check-in HH:MM" },
+        "actividad": { "type": "string", "description": "Zona o actividad realizada" },
+        "notas": { "type": "string", "description": "Observaciones de la asistencia" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["socioNombre", "fecha", "hora"]
+    }
+  },
+  "firestore": {
+    "/plans/{planId}": {
+      "schema": "Plan",
+      "description": "Catalogo de planes de membresia y tarifas definidos por el admin del gimnasio."
+    },
+    "/socios/{socioId}": {
+      "schema": "Socio",
+      "description": "Cartera de socios y estado de membresias gestionados por el admin del gimnasio."
+    },
+    "/transactions/{transactionId}": {
+      "schema": "Transaction",
+      "description": "Movimientos de ingresos y gastos del gimnasio editables y eliminables."
+    },
+    "/attendances/{attendanceId}": {
+      "schema": "Attendance",
+      "description": "Historial de asistencias y check-ins de socios en el gimnasio."
+    }
+  }
+}

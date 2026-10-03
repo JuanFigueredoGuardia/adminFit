@@ -1,0 +1,1709 @@
+<!doctype html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitAdmin SaaS - Panel de Administración para Gimnasios</title>
+    <meta name="description" content="FitAdmin SaaS - Panel de administración para gimnasios con planes tarifados por el admin, control de asistencias, finanzas y exportación PDF." />
+    <meta property="og:title" content="FitAdmin SaaS - Panel de Administración para Gimnasios" />
+    <meta property="og:description" content="FitAdmin SaaS - Panel de administración para gimnasios con planes tarifados por el admin, control de asistencias, finanzas y exportación PDF." />
+    <meta property="og:type" content="website" />
+    
+    <!-- Fuentes Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Lucide Icons CDN para visualización universal -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/src/index.css" />
+  </head>
+  <body class="bg-slate-950 text-slate-100 font-sans min-h-screen antialiased">
+    
+    <!-- ==========================================
+         BACKDROP MÓVIL PARA SIDEBAR
+         Se activa en pantallas táctiles / móviles
+         ========================================== -->
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 hidden transition-opacity duration-300 lg:hidden" aria-hidden="true"></div>
+
+    <div class="min-h-screen flex flex-col">
+      
+      <!-- ==========================================
+           1. SIDEBAR LATERAL (RESPONSIVE)
+           - En Desktop (lg:): Fijo a la izquierda, w-64
+           - En Móvil (<lg:): Oculto fuera de pantalla (-translate-x-full)
+             y se despliega con transición suave
+           ========================================== -->
+      <aside id="main-sidebar" class="fixed top-0 bottom-0 left-0 z-50 w-72 lg:w-64 bg-slate-900/95 lg:bg-slate-900/80 border-r border-slate-800 flex flex-col justify-between transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0 backdrop-blur-md">
+        
+        <!-- Logo y Cabecera de la Marca -->
+        <div>
+          <div class="h-20 flex items-center justify-between px-6 border-b border-slate-800">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-slate-950 font-black text-xl">
+                <i data-lucide="dumbbell" class="w-5 h-5 text-slate-950 stroke-[2.5]"></i>
+              </div>
+              <div>
+                <h1 class="font-extrabold text-lg tracking-tight text-white flex items-center gap-1.5">
+                  FitAdmin <span class="text-xs px-1.5 py-0.5 rounded font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">SaaS</span>
+                </h1>
+                <p class="text-xs text-slate-400 font-medium">Gestión de Gimnasios</p>
+              </div>
+            </div>
+
+            <!-- Botón cerrar solo visible en móviles -->
+            <button id="btn-close-sidebar" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 lg:hidden" aria-label="Cerrar menú">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+          <!-- Navegación del Panel -->
+          <nav class="p-4 space-y-1">
+            <div class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">Principal</div>
+            
+            <a href="#dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-sm transition-colors group">
+              <i data-lucide="layout-dashboard" class="w-4 h-4 text-emerald-400"></i>
+              <span>Dashboard & Socios</span>
+            </a>
+
+            <a href="#finanzas-section" id="nav-btn-analytics" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-colors group">
+              <div class="flex items-center gap-3">
+                <i data-lucide="wallet" class="w-4 h-4 text-teal-400 group-hover:text-emerald-400 transition-colors"></i>
+                <span>Finanzas y Caja</span>
+              </div>
+              <span class="text-[10px] px-1.5 py-0.5 font-mono bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded">En Vivo</span>
+            </a>
+
+            <a href="#membresias" id="nav-btn-plans" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-colors group">
+              <i data-lucide="ticket" class="w-4 h-4 text-slate-400 group-hover:text-emerald-400 transition-colors"></i>
+              <span>Planes & Membresías</span>
+            </a>
+
+            <a href="#asistencia-section" id="nav-btn-attendance" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-colors group">
+              <div class="flex items-center gap-3">
+                <i data-lucide="scan-face" class="w-4 h-4 text-emerald-400 group-hover:text-emerald-300 transition-colors"></i>
+                <span>Control de Asistencia</span>
+              </div>
+              <span class="text-[10px] px-1.5 py-0.5 font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded">Portería</span>
+            </a>
+
+            <div class="pt-5 px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">Herramientas & IA</div>
+
+            <button id="btn-sidebar-ai" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-teal-300 bg-teal-500/10 border border-teal-500/20 hover:bg-teal-500/20 transition-all group text-left">
+              <div class="flex items-center gap-3">
+                <i data-lucide="sparkles" class="w-4 h-4 text-teal-400 group-hover:scale-110 transition-transform"></i>
+                <span>FitBot AI Asistente</span>
+              </div>
+              <span class="text-[10px] px-1.5 py-0.5 font-bold uppercase rounded bg-teal-400 text-slate-950 font-mono">Gemini</span>
+            </button>
+
+            <button id="btn-sidebar-plans" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-400 hover:text-slate-100 hover:bg-slate-800/60 transition-colors group text-left mt-1">
+              <i data-lucide="tag" class="w-4 h-4 text-emerald-400"></i>
+              <span>Catálogo de Planes</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Info Gimnasio y Administrador en Pie de Sidebar -->
+        <div class="p-4 border-t border-slate-800 bg-slate-900/40">
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-800/50 border border-slate-800">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="relative shrink-0">
+                <div id="sidebar-admin-avatar" class="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center font-bold text-emerald-400 text-xs">
+                  TG
+                </div>
+                <span id="sidebar-admin-status-dot" class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-900"></span>
+              </div>
+              <div class="min-w-0">
+                <p id="sidebar-admin-name" class="text-xs font-bold text-white truncate">Carlos Mendonça</p>
+                <p id="sidebar-admin-email" class="text-[10px] text-emerald-400 font-medium truncate">admin@titanfitness.com</p>
+              </div>
+            </div>
+            <button id="btn-sidebar-auth" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700/60 transition-colors" title="Acceso de Administrador / Mi Cuenta">
+              <i data-lucide="log-in" id="sidebar-auth-icon" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ==========================================
+           2. HEADER SUPERIOR Y ÁREA PRINCIPAL
+           Offset en desktop con lg:pl-64
+           ========================================== -->
+      <div class="flex-1 lg:pl-64 flex flex-col">
+        
+        <!-- Header Superior -->
+        <header class="sticky top-0 z-30 h-20 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+          
+          <!-- Lado Izquierdo: Botón Menú Móvil + Nombre del Gimnasio -->
+          <div class="flex items-center gap-3 sm:gap-4">
+            <!-- Botón Hamburguesa en Móvil -->
+            <button id="btn-toggle-sidebar" class="lg:hidden p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500/50" aria-label="Abrir menú de navegación">
+              <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  Sede Central
+                </span>
+                <span class="text-slate-600 hidden sm:inline">•</span>
+                <span id="badge-connection-status" class="hidden sm:inline-flex items-center text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5"></span>
+                  Sistema Online • En Vivo
+                </span>
+              </div>
+              <h2 id="header-business-name" class="text-base sm:text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
+                Titan Fitness Center
+              </h2>
+            </div>
+          </div>
+
+          <!-- Lado Derecho: Acciones Rápidas & Perfil -->
+          <div class="flex items-center gap-2 sm:gap-3">
+            
+            <!-- Botón FitBot AI en Header -->
+            <button id="btn-header-ai" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/30 text-teal-300 font-bold text-xs uppercase tracking-wider transition-all shadow-sm active:scale-95 group" title="Abrir Asistente Inteligente Gemini">
+              <i data-lucide="sparkles" class="w-4 h-4 text-teal-400 group-hover:rotate-12 transition-transform"></i>
+              <span class="hidden sm:inline">FitBot AI</span>
+              <span class="text-[9px] px-1 py-0.2 rounded bg-teal-400/20 text-teal-300 font-mono hidden md:inline">Gemini</span>
+            </button>
+
+            <!-- Botón Rápido "+ Nuevo Socio" en Header -->
+            <button id="btn-header-new-socio" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-emerald-500/10 active:scale-95">
+              <i data-lucide="user-plus" class="w-4 h-4 stroke-[2.5]"></i>
+              <span>Nuevo Socio</span>
+            </button>
+
+            <!-- Campana de Notificaciones Interactiva -->
+            <div class="relative" id="notifications-wrapper">
+              <button 
+                id="btn-notifications" 
+                type="button"
+                class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-colors relative active:scale-95 focus:outline-none focus:ring-2 focus:ring-emerald-500/40" 
+                aria-label="Notificaciones" 
+                title="Ver notificaciones del gimnasio"
+              >
+                <i data-lucide="bell" class="w-4 h-4 pointer-events-none"></i>
+                <span id="notifications-badge" class="hidden absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full bg-amber-500 text-slate-950 font-extrabold text-[10px] items-center justify-center ring-2 ring-slate-950 shadow-md pointer-events-none">0</span>
+              </button>
+
+              <!-- Panel Desplegable de Notificaciones -->
+              <div 
+                id="notifications-dropdown" 
+                class="hidden absolute right-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-96 rounded-2xl bg-slate-900/98 backdrop-blur-xl border border-slate-800 shadow-2xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+              >
+                <!-- Cabecera del Panel -->
+                <div class="p-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-950/70">
+                  <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center">
+                      <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+                    </div>
+                    <span class="font-bold text-white text-xs tracking-wide">Notificaciones</span>
+                    <span id="notifications-unread-pill" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-mono">
+                      0 nuevas
+                    </span>
+                  </div>
+                  <button 
+                    id="btn-mark-all-read" 
+                    type="button"
+                    class="text-[11px] font-semibold text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1 active:scale-95"
+                    title="Marcar todas las notificaciones como leídas"
+                  >
+                    <i data-lucide="check-check" class="w-3.5 h-3.5"></i>
+                    <span>Marcar leídas</span>
+                  </button>
+                </div>
+
+                <!-- Barra de Filtros: Todas vs No Leídas -->
+                <div class="px-3.5 py-2 bg-slate-950/50 border-b border-slate-800/80 flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-1.5" role="tablist">
+                    <button 
+                      type="button" 
+                      id="notif-filter-all" 
+                      class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-800 text-white transition-colors"
+                    >
+                      Todas (<span id="notif-count-all">0</span>)
+                    </button>
+                    <button 
+                      type="button" 
+                      id="notif-filter-unread" 
+                      class="px-2.5 py-1 rounded-lg text-[11px] font-semibold text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors"
+                    >
+                      No leídas (<span id="notif-count-unread">0</span>)
+                    </button>
+                  </div>
+                  <button 
+                    type="button" 
+                    id="btn-clear-read-notifications" 
+                    class="text-[11px] font-medium text-slate-400 hover:text-rose-400 transition-colors flex items-center gap-1"
+                    title="Limpiar del panel las notificaciones que ya fueron leídas"
+                  >
+                    <i data-lucide="trash-2" class="w-3 h-3"></i>
+                    <span>Limpiar leídas</span>
+                  </button>
+                </div>
+
+                <!-- Lista de Notificaciones -->
+                <div id="notifications-list" class="max-h-80 overflow-y-auto divide-y divide-slate-800/60 text-xs">
+                  <!-- Inyectado dinámicamente -->
+                </div>
+
+                <!-- Footer del Panel -->
+                <div class="p-2.5 bg-slate-950/80 border-t border-slate-800 flex items-center justify-between px-3 text-[11px] text-slate-400">
+                  <span class="flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Alertas en tiempo real
+                  </span>
+                  <button id="btn-close-notifications" type="button" class="text-slate-400 hover:text-white transition-colors text-xs font-semibold">
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Perfil / Acceso Admin en Header -->
+            <div id="header-auth-container" class="flex items-center gap-2 pl-2 sm:pl-3 border-l border-slate-800">
+              <!-- Renderizado dinámico por JS: botón Ingresar o perfil de admin -->
+              <button id="btn-header-login" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-white text-xs font-bold transition-all shadow-sm">
+                <i data-lucide="log-in" class="w-4 h-4 text-emerald-400"></i>
+                <span>Acceso Admin</span>
+              </button>
+            </div>
+
+          </div>
+
+        </header>
+
+        <!-- ==========================================
+             3. CONTENIDO PRINCIPAL: DASHBOARD & SOCIOS
+             Diseñado Mobile-First con Tailwind
+             ========================================== -->
+        <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-6 sm:space-y-8">
+
+          <!-- ==========================================
+               TARJETAS MÉTRICAS DEL DASHBOARD
+               Requisito: 1 col en móvil, 2 en tablet, 4 en desktop
+               grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4
+               ========================================== -->
+          <section aria-labelledby="kpi-title">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 id="kpi-title" class="text-sm font-bold uppercase tracking-wider text-slate-400">
+                  Indicadores Clave del Negocio
+                </h3>
+                <span class="text-xs text-slate-500" id="current-date-display">Actualizado hoy</span>
+              </div>
+
+              <!-- Botón de Descarga Reporte PDF Mensual -->
+              <div class="flex items-center gap-2">
+                <button 
+                  id="btn-download-pdf-report"
+                  class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-emerald-400 border border-slate-700/80 hover:border-emerald-500/30 text-xs font-semibold shadow-sm transition-all active:scale-95 group"
+                  title="Descargar Resumen de Ingresos y Cartera en PDF"
+                >
+                  <i data-lucide="file-text" class="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                  <span>Descargar Reporte PDF</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+              
+              <!-- Métrica 1: Socios Activos (Clic para filtrar) -->
+              <div 
+                id="card-filter-activo" 
+                data-filter-card="activo"
+                role="button"
+                tabindex="0"
+                class="metric-interactive-card group cursor-pointer p-5 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-emerald-500/60 hover:bg-slate-900 transition-all duration-200 shadow-sm hover:shadow-lg hover:shadow-emerald-500/5 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden select-none"
+                title="Haz clic para ver solo socios activos"
+              >
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 group-hover:text-emerald-400 transition-colors">Socios Activos</span>
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                  </div>
+                </div>
+                <div class="flex items-baseline justify-between">
+                  <span id="metric-active-count" class="text-3xl font-extrabold text-white tracking-tight">0</span>
+                  <span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                    <i data-lucide="trending-up" class="w-3 h-3"></i> Al día
+                  </span>
+                </div>
+                <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 group-hover:text-emerald-400 transition-colors">
+                  <span>Membresías con cuota paga</span>
+                  <span class="metric-card-badge inline-flex items-center gap-0.5 font-semibold text-[10px] uppercase tracking-wider bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-400 group-hover:text-emerald-300">
+                    <i data-lucide="filter" class="w-2.5 h-2.5"></i> Filtrar
+                  </span>
+                </div>
+              </div>
+
+              <!-- Métrica 2: Membresías por Vencer (Clic para filtrar) -->
+              <div 
+                id="card-filter-por_vencer" 
+                data-filter-card="por_vencer"
+                role="button"
+                tabindex="0"
+                class="metric-interactive-card group cursor-pointer p-5 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-amber-500/60 hover:bg-slate-900 transition-all duration-200 shadow-sm hover:shadow-lg hover:shadow-amber-500/5 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden select-none"
+                title="Haz clic para ver solo membresías por vencer"
+              >
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 group-hover:text-amber-400 transition-colors">Por Vencer</span>
+                  <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center border border-amber-500/20 group-hover:bg-amber-500 group-hover:text-slate-950 transition-all">
+                    <i data-lucide="clock" class="w-5 h-5"></i>
+                  </div>
+                </div>
+                <div class="flex items-baseline justify-between">
+                  <span id="metric-expiring-count" class="text-3xl font-extrabold text-amber-400 tracking-tight">0</span>
+                  <span class="inline-flex items-center gap-1 text-xs font-semibold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+                    Próx. 7 días
+                  </span>
+                </div>
+                <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 group-hover:text-amber-400 transition-colors">
+                  <span>Listos para gestión renovación</span>
+                  <span class="metric-card-badge inline-flex items-center gap-0.5 font-semibold text-[10px] uppercase tracking-wider bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-400 group-hover:text-amber-300">
+                    <i data-lucide="filter" class="w-2.5 h-2.5"></i> Filtrar
+                  </span>
+                </div>
+              </div>
+
+              <!-- Métrica 3: Membresías Vencidas (Clic para filtrar) -->
+              <div 
+                id="card-filter-vencido" 
+                data-filter-card="vencido"
+                role="button"
+                tabindex="0"
+                class="metric-interactive-card group cursor-pointer p-5 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-rose-500/60 hover:bg-slate-900 transition-all duration-200 shadow-sm hover:shadow-lg hover:shadow-rose-500/5 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden select-none"
+                title="Haz clic para ver solo socios con membresía vencida"
+              >
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 group-hover:text-rose-400 transition-colors">Vencidos</span>
+                  <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center border border-rose-500/20 group-hover:bg-rose-500 group-hover:text-slate-950 transition-all">
+                    <i data-lucide="alert-circle" class="w-5 h-5"></i>
+                  </div>
+                </div>
+                <div class="flex items-baseline justify-between">
+                  <span id="metric-expired-count" class="text-3xl font-extrabold text-rose-400 tracking-tight">0</span>
+                  <span class="inline-flex items-center gap-1 text-xs font-semibold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-full border border-rose-500/20">
+                    A recuperar
+                  </span>
+                </div>
+                <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 group-hover:text-rose-400 transition-colors">
+                  <span>Cartera pendiente de pago</span>
+                  <span class="metric-card-badge inline-flex items-center gap-0.5 font-semibold text-[10px] uppercase tracking-wider bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-400 group-hover:text-rose-300">
+                    <i data-lucide="filter" class="w-2.5 h-2.5"></i> Filtrar
+                  </span>
+                </div>
+              </div>
+
+              <!-- Métrica 4: Ingresos del Mes en Pesos (Clic para ver todos) -->
+              <div 
+                id="card-filter-all" 
+                data-filter-card="all"
+                role="button"
+                tabindex="0"
+                class="metric-interactive-card group cursor-pointer p-5 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-teal-500/60 hover:bg-slate-900 transition-all duration-200 shadow-sm hover:shadow-lg hover:shadow-teal-500/5 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden select-none"
+                title="Haz clic para ver el total de todos los socios registrados"
+              >
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 group-hover:text-teal-400 transition-colors">Ingresos del Mes ($ Pesos)</span>
+                  <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center border border-teal-500/20 group-hover:bg-teal-500 group-hover:text-slate-950 transition-all">
+                    <i data-lucide="wallet" class="w-5 h-5"></i>
+                  </div>
+                </div>
+                <div class="flex items-baseline justify-between">
+                  <span id="metric-income-amount" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">$ 0</span>
+                  <span class="inline-flex items-center gap-1 text-xs font-semibold text-teal-400 bg-teal-500/10 px-2 py-0.5 rounded-full border border-teal-500/20">
+                    Pesos $
+                  </span>
+                </div>
+                <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 group-hover:text-teal-400 transition-colors">
+                  <span>Facturación total activa</span>
+                  <span class="metric-card-badge inline-flex items-center gap-0.5 font-semibold text-[10px] uppercase tracking-wider bg-slate-800/80 px-1.5 py-0.5 rounded text-slate-400 group-hover:text-teal-300">
+                    <i data-lucide="list" class="w-2.5 h-2.5"></i> Ver Todos
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ==========================================
+               GESTIÓN DE SOCIOS: BUSCADOR & FILTROS
+               ========================================== -->
+          <section id="socios-section" class="space-y-4 scroll-mt-24">
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div class="flex items-center gap-2.5 flex-wrap">
+                  <h3 class="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2">
+                    Gestión de Socios y Membresías
+                    <span id="badge-total-socios" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">
+                      0 registrados
+                    </span>
+                  </h3>
+                  <!-- Indicador de Filtro Activo desde Tarjetas -->
+                  <span id="filter-active-indicator" class="hidden text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-semibold items-center gap-1.5 animate-in fade-in">
+                    <i data-lucide="filter" class="w-3 h-3"></i>
+                    <span>Filtro:</span>
+                    <strong id="filter-active-name" class="capitalize">Activos</strong>
+                    <button id="btn-clear-filter" class="ml-1 text-slate-400 hover:text-white p-0.5" title="Quitar filtro y ver todos">
+                      &times;
+                    </button>
+                  </span>
+                </div>
+                <p class="text-xs text-slate-400 mt-0.5">Monitorea vencimientos, actualiza cuotas en pesos y gestiona renovaciones.</p>
+              </div>
+
+              <!-- Acciones primarias -->
+              <div class="flex items-center gap-2.5">
+                <button id="btn-open-new-socio-modal" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-lg shadow-emerald-500/20 active:scale-95">
+                  <i data-lucide="user-plus" class="w-4 h-4 stroke-[2.5]"></i>
+                  <span>Registrar Socio</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Barra de Herramientas: Buscador y Filtro por Estado -->
+            <div class="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              
+              <!-- Buscador con icono -->
+              <div class="relative flex-1">
+                <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                <input 
+                  type="text" 
+                  id="search-input" 
+                  placeholder="Buscar por nombre, email, plan o teléfono..." 
+                  class="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-950/60 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all"
+                />
+              </div>
+
+              <!-- Botones Filtro Segmentado (Mobile scrollable) -->
+              <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none" id="status-filters">
+                <button data-filter="all" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-slate-950 transition-colors whitespace-nowrap">
+                  Todos (<span id="filter-count-all">0</span>)
+                </button>
+                <button data-filter="activo" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-300 transition-colors whitespace-nowrap">
+                  Activos (<span id="filter-count-activo">0</span>)
+                </button>
+                <button data-filter="por_vencer" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-300 transition-colors whitespace-nowrap">
+                  Por Vencer (<span id="filter-count-por-vencer">0</span>)
+                </button>
+                <button data-filter="vencido" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-300 transition-colors whitespace-nowrap">
+                  Vencidos (<span id="filter-count-vencido">0</span>)
+                </button>
+              </div>
+
+            </div>
+
+            <!-- ==========================================
+                 VISTA HÍBRIDA RESPONSIVE:
+                 1. Desktop (md:block): TABLA TRADICIONAL
+                 2. Móvil (md:hidden): TARJETAS VERTICALES TÁCTILES
+                 ========================================== -->
+            
+            <!-- CONTENEDOR DESKTOP: TABLA TRADICIONAL -->
+            <div class="hidden md:block overflow-hidden rounded-2xl bg-slate-900/60 border border-slate-800 shadow-xl">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-800 bg-slate-900/80 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    <th class="py-3.5 px-5">Socio</th>
+                    <th class="py-3.5 px-4">Plan / Cuota</th>
+                    <th class="py-3.5 px-4">Vencimiento</th>
+                    <th class="py-3.5 px-4 text-center">Estado</th>
+                    <th class="py-3.5 px-5 text-right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="socios-table-body" class="divide-y divide-slate-800/60 text-sm">
+                  <!-- Filas inyectadas dinámicamente con JavaScript -->
+                </tbody>
+              </table>
+              <div id="table-empty-state" class="hidden p-12 text-center">
+                <i data-lucide="users-round" class="w-10 h-10 text-slate-600 mx-auto mb-3"></i>
+                <p class="text-sm font-semibold text-slate-300">No se encontraron socios</p>
+                <p class="text-xs text-slate-500 mt-1">Prueba cambiando los filtros de búsqueda o agrega un nuevo socio.</p>
+              </div>
+            </div>
+
+            <!-- CONTENEDOR MÓVIL: TARJETAS VERTICALES INDEPENDIENTES -->
+            <div id="socios-cards-container" class="md:hidden space-y-3.5">
+              <!-- Tarjetas móviles inyectadas dinámicamente con JavaScript -->
+            </div>
+
+            <div id="cards-empty-state" class="hidden md:hidden p-8 text-center bg-slate-900/40 rounded-2xl border border-slate-800/80">
+              <i data-lucide="users-round" class="w-8 h-8 text-slate-600 mx-auto mb-2"></i>
+              <p class="text-sm font-semibold text-slate-300">No se encontraron socios</p>
+              <p class="text-xs text-slate-500 mt-1">Prueba cambiando los filtros o registra uno nuevo.</p>
+            </div>
+
+          </section>
+
+          <!-- ==========================================
+               GESTIÓN FINANCIERA: INGRESOS & GASTOS
+               100% Interactivo: Crear, Editar, Eliminar
+               ========================================== -->
+          <section id="finanzas-section" class="space-y-4 scroll-mt-24 pt-4 border-t border-slate-800/80">
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div class="flex items-center gap-2.5 flex-wrap">
+                  <h3 class="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2 flex-wrap">
+                    <i data-lucide="wallet" class="w-5 h-5 text-teal-400"></i>
+                    Finanzas & Movimientos de Caja
+                    <span id="badge-total-transactions" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">
+                      0 movimientos
+                    </span>
+                    <span class="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400">
+                      <i data-lucide="zap" class="w-3 h-3 text-teal-400"></i> Borrado Instantáneo Activo
+                    </span>
+                  </h3>
+                </div>
+                <p class="text-xs text-slate-400 mt-0.5">Controla ingresos de cuotas, ventas y gastos operativos. Edita y elimina en tiempo real.</p>
+              </div>
+
+              <!-- Acciones primarias de Finanzas -->
+              <div class="flex items-center gap-2.5">
+                <button id="btn-open-new-transaction-modal" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-lg shadow-teal-500/20 active:scale-95">
+                  <i data-lucide="plus-circle" class="w-4 h-4 stroke-[2.5]"></i>
+                  <span>Registrar Movimiento</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Mini KPIs de Finanzas -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
+                <div>
+                  <span class="text-[11px] font-semibold uppercase text-emerald-400 flex items-center gap-1">
+                    <i data-lucide="arrow-down-left" class="w-3.5 h-3.5"></i> Ingresos Totales
+                  </span>
+                  <span id="finanzas-total-ingresos" class="text-xl sm:text-2xl font-extrabold text-white font-mono mt-1 block">$ 0</span>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center">
+                  <i data-lucide="trending-up" class="w-5 h-5"></i>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
+                <div>
+                  <span class="text-[11px] font-semibold uppercase text-rose-400 flex items-center gap-1">
+                    <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i> Gastos Operativos
+                  </span>
+                  <span id="finanzas-total-gastos" class="text-xl sm:text-2xl font-extrabold text-rose-400 font-mono mt-1 block">$ 0</span>
+                </div>
+                <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20 flex items-center justify-center">
+                  <i data-lucide="trending-down" class="w-5 h-5"></i>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex items-center justify-between">
+                <div>
+                  <span class="text-[11px] font-semibold uppercase text-slate-400 flex items-center gap-1">
+                    <i data-lucide="scale" class="w-3.5 h-3.5 text-teal-400"></i> Balance Neto
+                  </span>
+                  <span id="finanzas-balance-neto" class="text-xl sm:text-2xl font-extrabold text-white font-mono mt-1 block">$ 0</span>
+                </div>
+                <div id="finanzas-balance-badge" class="px-2.5 py-1 rounded-full text-xs font-bold font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  Superávit
+                </div>
+              </div>
+            </div>
+
+            <!-- Barra de Herramientas de Finanzas -->
+            <div class="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div class="relative flex-1">
+                <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                <input 
+                  type="text" 
+                  id="search-transactions-input" 
+                  placeholder="Buscar por concepto, categoría o socio..." 
+                  class="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-950/60 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500/50 transition-all"
+                />
+              </div>
+
+              <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none" id="tx-type-filters">
+                <button data-tx-filter="all" class="tx-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-teal-500 text-slate-950 transition-colors whitespace-nowrap">
+                  Todos (<span id="tx-count-all">0</span>)
+                </button>
+                <button data-tx-filter="ingreso" class="tx-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-300 transition-colors whitespace-nowrap">
+                  Ingresos (<span id="tx-count-ingresos">0</span>)
+                </button>
+                <button data-tx-filter="gasto" class="tx-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-300 transition-colors whitespace-nowrap">
+                  Gastos (<span id="tx-count-gastos">0</span>)
+                </button>
+              </div>
+            </div>
+
+            <!-- Tabla de Transacciones Desktop -->
+            <div class="hidden md:block overflow-hidden rounded-2xl bg-slate-900/60 border border-slate-800 shadow-xl">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-800 bg-slate-900/80 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    <th class="py-3.5 px-5">Tipo</th>
+                    <th class="py-3.5 px-4">Concepto / Socio</th>
+                    <th class="py-3.5 px-4">Categoría</th>
+                    <th class="py-3.5 px-4">Fecha</th>
+                    <th class="py-3.5 px-4">Método</th>
+                    <th class="py-3.5 px-4 text-right">Monto</th>
+                    <th class="py-3.5 px-5 text-right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="transactions-table-body" class="divide-y divide-slate-800/60 text-sm">
+                  <!-- Inyectado dinámicamente -->
+                </tbody>
+              </table>
+              <div id="transactions-empty-state" class="hidden p-8 text-center">
+                <i data-lucide="receipt" class="w-8 h-8 text-slate-600 mx-auto mb-2"></i>
+                <p class="text-sm font-semibold text-slate-300">No hay movimientos registrados</p>
+                <p class="text-xs text-slate-500 mt-1">Registra tu primer ingreso o gasto con el botón superior.</p>
+              </div>
+            </div>
+
+            <!-- Tarjetas de Transacciones Móviles -->
+            <div id="transactions-cards-container" class="md:hidden space-y-3">
+              <!-- Inyectado dinámicamente -->
+            </div>
+          </section>
+
+          <!-- ==========================================
+               CONTROL DE ASISTENCIA & CHECK-INS
+               100% Interactivo: Registrar, Editar, Eliminar
+               ========================================== -->
+          <section id="asistencia-section" class="space-y-4 scroll-mt-24 pt-4 border-t border-slate-800/80">
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <div class="flex items-center gap-2.5 flex-wrap">
+                  <h3 class="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2">
+                    <i data-lucide="scan-face" class="w-5 h-5 text-emerald-400"></i>
+                    Control de Asistencias & Check-in
+                    <span id="badge-total-attendances" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">
+                      0 registros
+                    </span>
+                  </h3>
+                </div>
+                <p class="text-xs text-slate-400 mt-0.5">Control de ingresos en portería, verificación de cuota al día, edición y eliminación de asistencias.</p>
+              </div>
+
+              <!-- Acciones primarias de Asistencia -->
+              <div class="flex items-center gap-2.5">
+                <button id="btn-open-new-attendance-modal" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-lg shadow-emerald-500/20 active:scale-95">
+                  <i data-lucide="user-check" class="w-4 h-4 stroke-[2.5]"></i>
+                  <span>Marcar Asistencia</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Mini KPIs de Asistencia -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Check-ins Hoy</span>
+                <span id="attendance-today-count" class="text-2xl font-extrabold text-emerald-400 font-mono">0</span>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Total Registros</span>
+                <span id="attendance-total-count" class="text-2xl font-extrabold text-white font-mono">0</span>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Actividad Top</span>
+                <span id="attendance-top-activity" class="text-sm font-bold text-white truncate block mt-1">Musculación</span>
+              </div>
+              <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+                <span class="text-[10px] uppercase font-bold text-slate-400 block">Molinete / Acceso</span>
+                <span class="text-xs font-semibold text-emerald-400 inline-flex items-center gap-1 mt-1">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Portería Online
+                </span>
+              </div>
+            </div>
+
+            <!-- Barra de Herramientas de Asistencia -->
+            <div class="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div class="relative flex-1">
+                <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                <input 
+                  type="text" 
+                  id="search-attendance-input" 
+                  placeholder="Buscar asistencia por socio o actividad..." 
+                  class="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-950/60 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all"
+                />
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button id="btn-attendance-filter-today" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-slate-950 transition-colors whitespace-nowrap">
+                  Solo Hoy
+                </button>
+                <button id="btn-attendance-filter-all" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors whitespace-nowrap">
+                  Todo el Historial
+                </button>
+              </div>
+            </div>
+
+            <!-- Tabla de Asistencias Desktop -->
+            <div class="hidden md:block overflow-hidden rounded-2xl bg-slate-900/60 border border-slate-800 shadow-xl">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-slate-800 bg-slate-900/80 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    <th class="py-3.5 px-5">Socio</th>
+                    <th class="py-3.5 px-4">Plan / Membresía</th>
+                    <th class="py-3.5 px-4">Fecha y Hora</th>
+                    <th class="py-3.5 px-4">Actividad / Área</th>
+                    <th class="py-3.5 px-4 text-center">Estado al Ingresar</th>
+                    <th class="py-3.5 px-5 text-right">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="attendances-table-body" class="divide-y divide-slate-800/60 text-sm">
+                  <!-- Inyectado dinámicamente -->
+                </tbody>
+              </table>
+              <div id="attendances-empty-state" class="hidden p-8 text-center">
+                <i data-lucide="scan-line" class="w-8 h-8 text-slate-600 mx-auto mb-2"></i>
+                <p class="text-sm font-semibold text-slate-300">No hay asistencias registradas</p>
+                <p class="text-xs text-slate-500 mt-1">Registra check-ins con el botón superior o desde la lista de socios.</p>
+              </div>
+            </div>
+
+            <!-- Tarjetas de Asistencias Móviles -->
+            <div id="attendances-cards-container" class="md:hidden space-y-3">
+              <!-- Inyectado dinámicamente -->
+            </div>
+          </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-auto border-t border-slate-900 bg-slate-950 px-6 py-4 text-center text-xs text-slate-500">
+          <p>FitAdmin SaaS • Panel de Control y Administración para Gimnasios</p>
+        </footer>
+
+      </div>
+
+    </div>
+
+    <!-- ==========================================
+         BOTÓN FLOTANTE HAMBURGUESA EN MÓVIL
+         Permite abrir el menú fácilmente con el pulgar
+         ========================================== -->
+    <button id="btn-floating-menu" class="fixed bottom-5 right-5 z-40 lg:hidden p-3.5 rounded-full bg-emerald-500 text-slate-950 font-bold shadow-xl shadow-emerald-500/30 hover:bg-emerald-400 active:scale-90 transition-transform flex items-center justify-center" aria-label="Abrir menú">
+      <i data-lucide="menu" class="w-6 h-6 stroke-[2.5]"></i>
+    </button>
+
+    <!-- ==========================================
+         MODAL 1: REGISTRAR / EDITAR SOCIO
+         ========================================== -->
+    <div id="modal-socio" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden animate-in fade-in duration-200">
+      <div class="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+              <i data-lucide="user-plus" class="w-4 h-4"></i>
+            </div>
+            <h3 id="modal-socio-title" class="text-lg font-bold text-white">Registrar Nuevo Socio</h3>
+          </div>
+          <button id="btn-close-socio-modal" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form id="form-socio" class="space-y-4 pt-4">
+          <input type="hidden" id="socio-id" value="" />
+
+          <!-- Nombre Completo -->
+          <div>
+            <label for="socio-nombre" class="block text-xs font-semibold text-slate-300 mb-1">Nombre Completo *</label>
+            <input 
+              type="text" 
+              id="socio-nombre" 
+              required 
+              placeholder="Ej. Valentina Morales" 
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50"
+            />
+          </div>
+
+          <!-- Email y Teléfono (2 columnas) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="socio-email" class="block text-xs font-semibold text-slate-300 mb-1">Correo Electrónico *</label>
+              <input 
+                type="email" 
+                id="socio-email" 
+                required 
+                placeholder="valentina@ejemplo.com" 
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50"
+              />
+            </div>
+            <div>
+              <label for="socio-telefono" class="block text-xs font-semibold text-slate-300 mb-1">Teléfono / WhatsApp *</label>
+              <input 
+                type="tel" 
+                id="socio-telefono" 
+                required 
+                placeholder="+54 9 11 4059-2811" 
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50"
+              />
+            </div>
+          </div>
+
+          <!-- Plan y Precio (100% Personalizable por el Administrador) -->
+          <div class="space-y-3 p-3.5 rounded-xl bg-slate-950/60 border border-slate-800">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="tag" class="w-3.5 h-3.5 text-emerald-400"></i>
+                Plan y Cuota (Fijado por el Admin)
+              </span>
+              <button type="button" id="btn-open-plans-catalog" class="text-[11px] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors">
+                + Administrar Planes
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Nombre del Plan Personalizado -->
+              <div>
+                <label for="socio-plan" class="block text-xs font-semibold text-slate-300 mb-1">
+                  Nombre del Plan *
+                </label>
+                <div class="relative">
+                  <input 
+                    type="text" 
+                    id="socio-plan" 
+                    list="planes-sugeridos"
+                    required 
+                    placeholder="Ej. Musculación, Pase Libre, Pilates..." 
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50"
+                  />
+                  <datalist id="planes-sugeridos">
+                    <!-- Opciones dinámicas de planes -->
+                  </datalist>
+                </div>
+                <!-- Chips de Planes Rápidos -->
+                <div id="quick-plans-container" class="flex flex-wrap gap-1 mt-1.5">
+                  <!-- Inyectados con JS -->
+                </div>
+              </div>
+
+              <!-- Precio / Monto Cobrado que el Admin Decide en Pesos -->
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <label for="socio-precio" class="block text-xs font-semibold text-slate-300">
+                    Monto Cuota ($ Pesos) *
+                  </label>
+                  <span class="text-[10px] text-emerald-400 font-mono font-semibold">Tú decides el precio</span>
+                </div>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+                  <input 
+                    type="number" 
+                    id="socio-precio" 
+                    min="0" 
+                    step="100"
+                    value="45000" 
+                    required 
+                    placeholder="Ej. 45000" 
+                    class="w-full pl-8 pr-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50"
+                  />
+                </div>
+                <!-- Chips de Precios Rápidos en Pesos -->
+                <div class="flex flex-wrap items-center gap-1.5 mt-1.5">
+                  <span class="text-[10px] text-slate-500">Valores:</span>
+                  <button type="button" class="btn-quick-price px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 font-mono transition-colors" data-price="25000">$25k</button>
+                  <button type="button" class="btn-quick-price px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 font-mono transition-colors" data-price="35000">$35k</button>
+                  <button type="button" class="btn-quick-price px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 font-mono transition-colors" data-price="45000">$45k</button>
+                  <button type="button" class="btn-quick-price px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 font-mono transition-colors" data-price="60000">$60k</button>
+                  <button type="button" class="btn-quick-price px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-[11px] text-slate-300 font-mono transition-colors" data-price="80000">$80k</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Fechas: Inicio y Fin -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="socio-fecha-inicio" class="block text-xs font-semibold text-slate-300 mb-1">Fecha de Inicio *</label>
+              <input 
+                type="date" 
+                id="socio-fecha-inicio" 
+                required 
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50"
+              />
+            </div>
+            <div>
+              <label for="socio-fecha-fin" class="block text-xs font-semibold text-slate-300 mb-1">Fecha de Vencimiento *</label>
+              <input 
+                type="date" 
+                id="socio-fecha-fin" 
+                required 
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50"
+              />
+            </div>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-800">
+            <button 
+              type="button" 
+              id="btn-cancel-socio" 
+              class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            >
+              Cancelar
+            </button>
+            <button 
+              type="submit" 
+              id="btn-save-socio" 
+              class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-md shadow-emerald-500/20 active:scale-95"
+            >
+              Guardar Socio
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL INTERACTIVO DE CONFIRMACIÓN PARA ELIMINAR
+         ========================================== -->
+    <div id="modal-confirm-delete" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden animate-in fade-in duration-200">
+      <div class="w-full max-w-md rounded-2xl bg-slate-900 border border-rose-500/30 p-6 shadow-2xl relative text-center">
+        <!-- Icono de Advertencia -->
+        <div class="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 mx-auto flex items-center justify-center mb-4 shadow-lg shadow-rose-500/10">
+          <i data-lucide="alert-triangle" class="w-7 h-7 stroke-[2.2]"></i>
+        </div>
+
+        <!-- Título y Pregunta -->
+        <h3 id="confirm-delete-title" class="text-lg font-bold text-white mb-1.5">
+          ¿Estás seguro de eliminar este registro?
+        </h3>
+        
+        <!-- Detalle dinámico del elemento -->
+        <div id="confirm-delete-detail-box" class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 text-left my-4">
+          <div class="flex items-center gap-2 text-xs">
+            <span id="confirm-delete-item-tag" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-rose-500/20 text-rose-300 border border-rose-500/30">
+              Socio
+            </span>
+            <span id="confirm-delete-item-name" class="font-bold text-white truncate text-sm">
+              Nombre
+            </span>
+          </div>
+          <p id="confirm-delete-item-desc" class="text-xs text-slate-400 mt-1.5 truncate">
+            Información adicional
+          </p>
+        </div>
+
+        <p id="confirm-delete-warning" class="text-xs text-rose-400/90 mb-5 font-medium">
+          Esta acción no se puede deshacer. Los datos serán removidos permanentemente del sistema.
+        </p>
+
+        <!-- Botones de Acción -->
+        <div class="grid grid-cols-2 gap-3">
+          <button 
+            type="button" 
+            id="btn-cancel-delete" 
+            class="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs tracking-wide transition-all active:scale-95"
+          >
+            Cancelar
+          </button>
+          <button 
+            type="button" 
+            id="btn-confirm-delete-action" 
+            class="w-full py-2.5 px-4 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs tracking-wide transition-all shadow-lg shadow-rose-500/25 active:scale-95 flex items-center justify-center gap-1.5"
+          >
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+            <span id="btn-confirm-delete-text">Sí, Eliminar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL 4: CATÁLOGO DE PLANES Y TARIFAS DEL GIMNASIO
+         El administrador configura, edita y elimina sus propios planes
+         ========================================== -->
+    <div id="modal-plans" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden animate-in fade-in duration-200">
+      <div class="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+              <i data-lucide="ticket" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-white">Catálogo de Planes y Tarifas</h3>
+              <p class="text-xs text-slate-400">Define o edita los planes de tu gimnasio y el valor de cada cuota.</p>
+            </div>
+          </div>
+          <button id="btn-close-plans-modal" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Formulario para que el admin agregue o edite planes -->
+        <form id="form-new-plan" class="my-4 p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2.5">
+          <input type="hidden" id="input-edit-plan-id" value="" />
+          <div class="flex items-center justify-between">
+            <p id="form-plan-title" class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">Crear Nuevo Plan de Membresía</p>
+            <button type="button" id="btn-cancel-edit-plan" class="hidden text-[11px] text-amber-400 hover:text-amber-300">
+              Cancelar edición
+            </button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-2">
+            <div class="sm:col-span-6">
+              <input 
+                type="text" 
+                id="input-new-plan-name" 
+                required 
+                placeholder="Nombre del plan (ej. Funcional 3x)" 
+                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              />
+            </div>
+            <div class="sm:col-span-3">
+              <div class="relative">
+                <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold">$</span>
+                <input 
+                  type="number" 
+                  id="input-new-plan-price" 
+                  min="0" 
+                  step="100"
+                  required 
+                  placeholder="Cuota $" 
+                  class="w-full pl-6 pr-2 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white font-mono font-bold focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                />
+              </div>
+            </div>
+            <div class="sm:col-span-3 flex gap-1">
+              <button 
+                type="submit" 
+                id="btn-submit-plan"
+                class="w-full py-2 px-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors flex items-center justify-center gap-1"
+              >
+                <span id="btn-submit-plan-text">Añadir</span>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Lista de planes existentes con opción de editar y eliminar -->
+        <div class="flex-1 overflow-y-auto space-y-2 pr-1 max-h-60" id="plans-list-container">
+          <!-- Inyectado dinámicamente -->
+        </div>
+
+        <div class="pt-3 border-t border-slate-800 flex justify-end">
+          <button id="btn-done-plans-modal" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs transition-colors">
+            Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL 5: REGISTRAR / EDITAR MOVIMIENTO FINANCIERO
+         ========================================== -->
+    <div id="modal-transaction" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden animate-in fade-in duration-200">
+      <div class="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-teal-500/10 text-teal-400 flex items-center justify-center border border-teal-500/20">
+              <i data-lucide="receipt" class="w-4 h-4"></i>
+            </div>
+            <h3 id="modal-transaction-title" class="text-base sm:text-lg font-bold text-white">Registrar Movimiento Financiero</h3>
+          </div>
+          <button id="btn-close-transaction-modal" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form id="form-transaction" class="space-y-4 pt-4 text-xs">
+          <input type="hidden" id="tx-id" value="" />
+
+          <!-- Tipo de Movimiento: Ingreso vs Gasto -->
+          <div>
+            <label class="block text-slate-300 font-semibold mb-1.5">Tipo de Movimiento *</label>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="cursor-pointer">
+                <input type="radio" name="tx-tipo" value="ingreso" checked class="peer sr-only" />
+                <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-center font-bold text-slate-300 peer-checked:bg-emerald-500/10 peer-checked:border-emerald-500 peer-checked:text-emerald-400 transition-all flex items-center justify-center gap-2">
+                  <i data-lucide="arrow-down-left" class="w-4 h-4 text-emerald-400"></i>
+                  <span>Ingreso (+$)</span>
+                </div>
+              </label>
+
+              <label class="cursor-pointer">
+                <input type="radio" name="tx-tipo" value="gasto" class="peer sr-only" />
+                <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-center font-bold text-slate-300 peer-checked:bg-rose-500/10 peer-checked:border-rose-500 peer-checked:text-rose-400 transition-all flex items-center justify-center gap-2">
+                  <i data-lucide="arrow-up-right" class="w-4 h-4 text-rose-400"></i>
+                  <span>Gasto (-$)</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Concepto -->
+          <div>
+            <label for="tx-concepto" class="block font-semibold text-slate-300 mb-1">Concepto o Detalle *</label>
+            <input 
+              type="text" 
+              id="tx-concepto" 
+              required 
+              placeholder="Ej. Cuota Mensual Socio, Venta Suplemento, Factura Luz..."
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500/50"
+            />
+          </div>
+
+          <!-- Monto y Categoría -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="tx-monto" class="block font-semibold text-slate-300 mb-1">Monto en Pesos ($) *</label>
+              <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-400">$</span>
+                <input 
+                  type="number" 
+                  id="tx-monto" 
+                  min="0" 
+                  step="100" 
+                  required 
+                  placeholder="45000"
+                  class="w-full pl-7 pr-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-teal-500/50"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="tx-categoria" class="block font-semibold text-slate-300 mb-1">Categoría *</label>
+              <select 
+                id="tx-categoria" 
+                required 
+                class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-500/50"
+              >
+                <option value="Cuotas Membresía">Cuotas Membresía</option>
+                <option value="Suplementos & Tienda">Suplementos & Tienda</option>
+                <option value="Pase Diario">Pase Diario</option>
+                <option value="Personal Trainer">Personal Trainer</option>
+                <option value="Mantenimiento">Mantenimiento Equipos</option>
+                <option value="Servicios">Servicios (Luz/Agua/Gas)</option>
+                <option value="Alquiler">Alquiler de Sede</option>
+                <option value="Sueldos">Sueldos e Instructores</option>
+                <option value="Insumos">Insumos y Limpieza</option>
+                <option value="Otros">Otros</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Fecha y Método de Pago -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="tx-fecha" class="block font-semibold text-slate-300 mb-1">Fecha *</label>
+              <input 
+                type="date" 
+                id="tx-fecha" 
+                required 
+                class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-500/50"
+              />
+            </div>
+
+            <div>
+              <label for="tx-metodo" class="block font-semibold text-slate-300 mb-1">Método de Pago *</label>
+              <select 
+                id="tx-metodo" 
+                required 
+                class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-500/50"
+              >
+                <option value="Transferencia">Transferencia Bancaria</option>
+                <option value="MercadoPago">MercadoPago / QR</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+                <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                <option value="Débito Automático">Débito Automático</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Socio Asociado Opcional -->
+          <div>
+            <label for="tx-socio-nombre" class="block font-semibold text-slate-300 mb-1">Socio Vinculado (Opcional)</label>
+            <input 
+              type="text" 
+              id="tx-socio-nombre" 
+              list="tx-socios-list"
+              placeholder="Nombre del socio relacionado..."
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500/50"
+            />
+            <datalist id="tx-socios-list">
+              <!-- Opciones dinámicas -->
+            </datalist>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-2.5">
+            <button 
+              type="button" 
+              id="btn-delete-modal-transaction"
+              class="hidden px-3.5 py-2 rounded-xl text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 border border-rose-500/20 font-semibold text-xs transition-colors items-center gap-1.5 active:scale-95"
+            >
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              <span>Borrar al instante</span>
+            </button>
+            <div class="flex items-center gap-2.5 ml-auto">
+              <button 
+                type="button" 
+                id="btn-cancel-transaction"
+                class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-colors"
+              >
+                Cancelar
+              </button>
+              <button 
+                type="submit" 
+                id="btn-save-transaction"
+                class="px-5 py-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold text-xs tracking-wide transition-all shadow-md shadow-teal-500/20 active:scale-95"
+              >
+                Guardar Movimiento
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL 6: REGISTRAR / EDITAR ASISTENCIA / CHECK-IN
+         ========================================== -->
+    <div id="modal-attendance" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden animate-in fade-in duration-200">
+      <div class="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+              <i data-lucide="scan-face" class="w-4 h-4"></i>
+            </div>
+            <h3 id="modal-attendance-title" class="text-base sm:text-lg font-bold text-white">Marcar Asistencia en Portería</h3>
+          </div>
+          <button id="btn-close-attendance-modal" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form id="form-attendance" class="space-y-4 pt-4 text-xs">
+          <input type="hidden" id="att-id" value="" />
+          <input type="hidden" id="att-socio-id" value="" />
+
+          <!-- Selección de Socio -->
+          <div>
+            <label for="att-socio-nombre" class="block font-semibold text-slate-300 mb-1">Nombre del Socio *</label>
+            <input 
+              type="text" 
+              id="att-socio-nombre" 
+              list="att-socios-list"
+              required 
+              placeholder="Escribe o selecciona el socio..."
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            />
+            <datalist id="att-socios-list">
+              <!-- Opciones dinámicas -->
+            </datalist>
+          </div>
+
+          <!-- Info en Vivo de Membresía del Socio Seleccionado -->
+          <div id="att-socio-preview" class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] uppercase font-bold text-slate-500 block">Plan & Cuota</span>
+              <span id="att-preview-plan" class="text-xs font-bold text-slate-200">Selecciona un socio</span>
+            </div>
+            <div id="att-preview-badge" class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-800 text-slate-400">
+              En espera
+            </div>
+          </div>
+
+          <!-- Fecha y Hora -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label for="att-fecha" class="block font-semibold text-slate-300 mb-1">Fecha de Ingreso *</label>
+              <input 
+                type="date" 
+                id="att-fecha" 
+                required 
+                class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+              />
+            </div>
+
+            <div>
+              <label for="att-hora" class="block font-semibold text-slate-300 mb-1">Hora de Ingreso *</label>
+              <input 
+                type="time" 
+                id="att-hora" 
+                required 
+                class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+              />
+            </div>
+          </div>
+
+          <!-- Actividad / Área -->
+          <div>
+            <label for="att-actividad" class="block font-semibold text-slate-300 mb-1">Actividad o Área</label>
+            <select 
+              id="att-actividad" 
+              class="w-full px-3 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            >
+              <option value="Musculación">Musculación & Peso Libre</option>
+              <option value="CrossFit">CrossFit & Funcional</option>
+              <option value="Cardio">Cardio & Cintas</option>
+              <option value="Spinning">Spinning / Ciclismo Indoor</option>
+              <option value="Pilates & Yoga">Pilates & Yoga</option>
+              <option value="Clase Grupal">Clases Grupales</option>
+            </select>
+          </div>
+
+          <!-- Notas -->
+          <div>
+            <label for="att-notas" class="block font-semibold text-slate-300 mb-1">Observaciones (Opcional)</label>
+            <input 
+              type="text" 
+              id="att-notas" 
+              placeholder="Ej. Entrenó turno mañana, pase regular..."
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            />
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="pt-3 border-t border-slate-800 flex items-center justify-end gap-2.5">
+            <button 
+              type="button" 
+              id="btn-cancel-attendance"
+              class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition-colors"
+            >
+              Cancelar
+            </button>
+            <button 
+              type="submit" 
+              id="btn-save-attendance"
+              class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs tracking-wide transition-all shadow-md shadow-emerald-500/20 active:scale-95"
+            >
+              Confirmar Asistencia
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL 7: AUTENTICACIÓN DEL ADMINISTRADOR (FIREBASE AUTH)
+         Google Sign-in, Crear Cuenta, Recuperar Contraseña
+         ========================================== -->
+    <div id="modal-auth" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden animate-in fade-in duration-200">
+      <div class="w-full max-w-md rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl relative">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+              <i data-lucide="shield-check" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 id="modal-auth-title" class="text-base font-bold text-white">Acceso de Administrador</h3>
+              <p class="text-xs text-slate-400">Identifícate para gestionar tu gimnasio</p>
+            </div>
+          </div>
+          <button id="btn-close-auth-modal" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Botón de Acceso Directo con Google -->
+        <div class="pt-4">
+          <button 
+            type="button" 
+            id="btn-google-login" 
+            class="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-xs tracking-wide transition-all shadow-md flex items-center justify-center gap-2.5 active:scale-98"
+          >
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span id="btn-google-login-text">Continuar con Google</span>
+          </button>
+
+          <div class="relative my-4">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-800"></div></div>
+            <div class="relative flex justify-center text-[10px] uppercase font-bold text-slate-500">
+              <span class="bg-slate-900 px-2">o con correo electrónico</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pestañas de Navegación del Modal Auth -->
+        <div class="flex border-b border-slate-800 mb-4 text-xs font-semibold">
+          <button type="button" id="tab-btn-login" class="flex-1 pb-2 border-b-2 border-emerald-400 text-emerald-400 transition-colors">
+            Iniciar Sesión
+          </button>
+          <button type="button" id="tab-btn-register" class="flex-1 pb-2 border-b-2 border-transparent text-slate-400 hover:text-white transition-colors">
+            Crear Cuenta
+          </button>
+          <button type="button" id="tab-btn-reset" class="flex-1 pb-2 border-b-2 border-transparent text-slate-400 hover:text-white transition-colors">
+            Recuperar
+          </button>
+        </div>
+
+        <!-- 1. Formulario Iniciar Sesión -->
+        <form id="form-auth-login" class="space-y-3.5 text-xs">
+          <div>
+            <label for="login-email" class="block font-semibold text-slate-300 mb-1">Correo Electrónico</label>
+            <input 
+              type="email" 
+              id="login-email" 
+              required 
+              placeholder="admin@titanfitness.com" 
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            />
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label for="login-password" class="block font-semibold text-slate-300">Contraseña</label>
+              <button type="button" id="btn-goto-reset-link" class="text-[11px] text-emerald-400 hover:underline">
+                ¿Olvidaste tu contraseña?
+              </button>
+            </div>
+            <input 
+              type="password" 
+              id="login-password" 
+              required 
+              placeholder="••••••••" 
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            />
+          </div>
+          <button 
+            type="submit" 
+            id="btn-submit-login" 
+            class="w-full py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-emerald-500/20 active:scale-98 flex items-center justify-center gap-2 mt-2"
+          >
+            <span>Ingresar como Administrador</span>
+          </button>
+          <p class="text-center text-[11px] text-slate-400 pt-1">
+            ¿No tienes cuenta? <button type="button" id="btn-goto-register-link" class="text-emerald-400 font-bold hover:underline">Crea una nueva aquí</button>
+          </p>
+        </form>
+
+        <!-- 2. Formulario Crear Cuenta -->
+        <form id="form-auth-register" class="space-y-3.5 text-xs hidden">
+          <div>
+            <label for="register-name" class="block font-semibold text-slate-300 mb-1">Nombre Completo</label>
+            <input 
+              type="text" 
+              id="register-name" 
+              required 
+              placeholder="Carlos Mendonça" 
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            />
+          </div>
+          <div>
+            <label for="register-email" class="block font-semibold text-slate-300 mb-1">Correo Electrónico</label>
+            <input 
+              type="email" 
+              id="register-email" 
+              required 
+              placeholder="carlos@titanfitness.com" 
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            />
+          </div>
+          <div>
+            <label for="register-password" class="block font-semibold text-slate-300 mb-1">Contraseña (Mínimo 6 caracteres)</label>
+            <input 
+              type="password" 
+              id="register-password" 
+              required 
+              minlength="6"
+              placeholder="••••••••" 
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            />
+          </div>
+          <button 
+            type="submit" 
+            id="btn-submit-register" 
+            class="w-full py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-emerald-500/20 active:scale-98 flex items-center justify-center gap-2 mt-2"
+          >
+            <span>Crear Cuenta de Admin</span>
+          </button>
+          <p class="text-center text-[11px] text-slate-400 pt-1">
+            ¿Ya tienes cuenta? <button type="button" id="btn-goto-login-link" class="text-emerald-400 font-bold hover:underline">Inicia sesión</button>
+          </p>
+        </form>
+
+        <!-- 3. Formulario Recuperar Contraseña -->
+        <form id="form-auth-reset" class="space-y-3.5 text-xs hidden">
+          <p class="text-slate-300 leading-relaxed text-[11px]">
+            Ingresa el correo electrónico asociado a tu cuenta de administrador. Te enviaremos un enlace oficial para restablecer tu contraseña.
+          </p>
+          <div>
+            <label for="reset-email" class="block font-semibold text-slate-300 mb-1">Correo Electrónico</label>
+            <input 
+              type="email" 
+              id="reset-email" 
+              required 
+              placeholder="admin@titanfitness.com" 
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+            />
+          </div>
+          <button 
+            type="submit" 
+            id="btn-submit-reset" 
+            class="w-full py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-emerald-500/20 active:scale-98 flex items-center justify-center gap-2 mt-2"
+          >
+            <span>Enviar Enlace de Recuperación</span>
+          </button>
+          <p class="text-center text-[11px] text-slate-400 pt-1">
+            <button type="button" id="btn-reset-back-link" class="text-emerald-400 font-bold hover:underline">Volver a Iniciar Sesión</button>
+          </p>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL 8: CHATBOT MULTI-TURNO CON GEMINI
+         FitBot AI: Asistente del Gimnasio
+         ========================================== -->
+    <div id="modal-gemini-chat" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 bg-slate-950/80 backdrop-blur-sm hidden animate-in fade-in duration-200">
+      <div class="w-full max-w-xl sm:rounded-2xl rounded-t-2xl bg-slate-900 border border-slate-800 shadow-2xl relative flex flex-col h-[92vh] sm:h-[82vh] overflow-hidden">
+        
+        <!-- Cabecera del Chatbot -->
+        <div class="p-4 border-b border-slate-800 bg-slate-900/90 flex items-center justify-between gap-3 shrink-0">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-teal-500/20">
+              <i data-lucide="sparkles" class="w-5 h-5 text-slate-950 stroke-[2.5]"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-sm font-extrabold text-white">FitBot AI</h3>
+                <span class="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30">Gemini 3.5</span>
+              </div>
+              <p class="text-[11px] text-slate-400">Copiloto inteligente para tu gimnasio</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5">
+            <!-- Selector de Modelo / Velocidad -->
+            <div class="flex rounded-lg bg-slate-950 p-0.5 border border-slate-800 text-[10px]">
+              <button 
+                type="button" 
+                id="btn-model-lite" 
+                class="px-2 py-1 rounded-md text-slate-400 hover:text-white transition-colors"
+                title="Modo Rápido: gemini-3.1-flash-lite"
+              >
+                ⚡ Rápido
+              </button>
+              <button 
+                type="button" 
+                id="btn-model-flash" 
+                class="px-2 py-1 rounded-md bg-teal-500 text-slate-950 font-bold shadow-sm transition-colors"
+                title="Modo General: gemini-3.5-flash"
+              >
+                🧠 Completo
+              </button>
+            </div>
+
+            <!-- Botón Limpiar Historial -->
+            <button 
+              type="button" 
+              id="btn-clear-chat" 
+              class="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-800 transition-colors" 
+              title="Reiniciar conversación"
+            >
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Botón Cerrar Chat -->
+            <button 
+              type="button" 
+              id="btn-close-chat-modal" 
+              class="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            >
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hilo de Mensajes con Scroll -->
+        <div id="chat-messages-container" class="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs">
+          <!-- Mensaje de bienvenida inicial -->
+          <div class="flex items-start gap-2.5 max-w-[90%]">
+            <div class="w-7 h-7 rounded-lg bg-teal-500/20 text-teal-400 border border-teal-500/30 flex items-center justify-center shrink-0 mt-0.5">
+              <i data-lucide="bot" class="w-4 h-4"></i>
+            </div>
+            <div class="p-3.5 rounded-2xl rounded-tl-sm bg-slate-950 border border-slate-800 text-slate-200 space-y-2 leading-relaxed">
+              <p class="font-semibold text-white">¡Hola, Admin! 👋 Soy FitBot AI, tu asistente especializado en FitAdmin.</p>
+              <p class="text-slate-300">Tengo acceso a tus socios, métricas financieras y planes de membresía. ¿En qué puedo ayudarte hoy?</p>
+              
+              <!-- Chips de Sugerencias Rápidas -->
+              <div class="pt-2 flex flex-wrap gap-1.5">
+                <button type="button" class="chat-prompt-chip px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-teal-500/10 border border-slate-800 hover:border-teal-500/30 text-teal-300 text-[11px] transition-colors text-left">
+                  💡 ¿Cómo reactivar socios vencidos?
+                </button>
+                <button type="button" class="chat-prompt-chip px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-teal-500/10 border border-slate-800 hover:border-teal-500/30 text-teal-300 text-[11px] transition-colors text-left">
+                  💰 Sugerir estrategia de precios de cuotas
+                </button>
+                <button type="button" class="chat-prompt-chip px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-teal-500/10 border border-slate-800 hover:border-teal-500/30 text-teal-300 text-[11px] transition-colors text-left">
+                  📱 Redactar mensaje de cobranza por WhatsApp
+                </button>
+                <button type="button" class="chat-prompt-chip px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-teal-500/10 border border-slate-800 hover:border-teal-500/30 text-teal-300 text-[11px] transition-colors text-left">
+                  📊 Analizar el balance y flujo de caja
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Indicador de escritura / Pensando -->
+        <div id="chat-typing-indicator" class="hidden px-5 py-2 text-xs text-teal-400 bg-slate-900/60 border-t border-slate-800 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-teal-400 animate-bounce"></span>
+          <span class="w-2 h-2 rounded-full bg-teal-400 animate-bounce [animation-delay:0.2s]"></span>
+          <span class="w-2 h-2 rounded-full bg-teal-400 animate-bounce [animation-delay:0.4s]"></span>
+          <span class="text-[11px] font-mono text-slate-400 ml-1">FitBot está generando respuesta...</span>
+        </div>
+
+        <!-- Barra Inferior de Entrada de Mensaje -->
+        <form id="form-gemini-chat" class="p-3 border-t border-slate-800 bg-slate-950/80 flex items-center gap-2">
+          <input 
+            type="text" 
+            id="input-chat-message" 
+            placeholder="Pregúntale a FitBot AI sobre tus socios o finanzas..." 
+            class="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500/50"
+            autocomplete="off"
+          />
+          <button 
+            type="submit" 
+            id="btn-send-chat" 
+            class="p-2.5 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-bold transition-all shadow-md shadow-teal-500/20 active:scale-95 shrink-0"
+            title="Enviar mensaje"
+          >
+            <i data-lucide="send" class="w-4 h-4"></i>
+          </button>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- Botón Flotante de FitBot AI (FAB) -->
+    <button 
+      id="btn-floating-ai" 
+      class="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 rounded-full bg-gradient-to-r from-teal-500 to-emerald-400 hover:from-teal-400 hover:to-emerald-300 text-slate-950 font-extrabold text-xs shadow-xl shadow-teal-500/25 hover:shadow-teal-500/40 hover:scale-105 active:scale-95 transition-all cursor-pointer group"
+      title="Abrir Asistente FitBot AI"
+    >
+      <div class="relative">
+        <i data-lucide="sparkles" class="w-4 h-4 text-slate-950 group-hover:rotate-12 transition-transform"></i>
+        <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-white animate-ping"></span>
+      </div>
+      <span class="tracking-wide">FitBot AI</span>
+    </button>
+
+    <!-- Contenedor interactivo de Notificaciones Toast flotantes -->
+    <div id="toast-container" class="fixed bottom-5 left-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full px-4 sm:px-0"></div>
+
+    <!-- Script principal de JavaScript / TypeScript -->
+    <script type="module" src="/src/main.ts"></script>
+    <script>
+      // Inicializar iconos de Lucide al cargar la vista
+      document.addEventListener("DOMContentLoaded", () => {
+        if (window.lucide) {
+          window.lucide.createIcons();
+        }
+      });
+    </script>
+  </body>
+</html>

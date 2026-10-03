@@ -1,0 +1,8 @@
+{
+  "name": "FitQuest",
+  "description": "FitAdmin SaaS - Panel de administración para gimnasios con planes tarifados por el admin, control de asistencias, finanzas en tiempo real y exportación PDF.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
